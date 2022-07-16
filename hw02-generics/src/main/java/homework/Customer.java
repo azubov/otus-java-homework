@@ -5,12 +5,14 @@ public class Customer {
     private String name;
     private long scores;
 
-    //todo: 1. в этом классе надо исправить ошибки
-
     public Customer(long id, String name, long scores) {
         this.id = id;
         this.name = name;
         this.scores = scores;
+    }
+
+    public Customer(Customer customer) {
+        this(customer.getId(), customer.getName(), customer.getScores());
     }
 
     public long getId() {
@@ -46,19 +48,22 @@ public class Customer {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Customer customer = (Customer) o;
-
-        if (id != customer.id) return false;
-        if (scores != customer.scores) return false;
-        return name != null ? name.equals(customer.name) : customer.name == null;
+        return id == customer.id;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (int) (scores ^ (scores >>> 32));
-        return result;
+        /*
+            get top half of long 64
+            long topBits = id >>> 32;
+
+            take long 64 and xor it's lower half with topBits
+            long xor = id ^ topBits;
+
+            cast lower half to int 32
+            int result = (int) xor;
+         */
+        return (int) (id ^ (id >>> 32));
     }
 }
