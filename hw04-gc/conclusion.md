@@ -1,8 +1,8 @@
 gc: G1GC  
 Before optimization best heap size 3328mb  
 time: spend msec:10593, sec:10  
-After optimization best heap size 1024mb  
-time: spend msec:10454, sec:10
+After optimization best heap size 640mb  
+time: spend msec:2201, sec:2
 
 -------------------------------
 Not optimized
@@ -35,28 +35,19 @@ time: spend msec:15542, sec:15
 Optimized
 
 heap: 256
-time: spend msec:12214, sec:12
+time: spend msec:2832, sec:2
 
 heap: 512
-time: spend msec:11292, sec:11
+time: spend msec:2313, sec:2
+
+heap: 640
+time: spend msec:2201, sec:2
+
+heap: 768
+time: spend msec:2357, sec:2
 
 heap: 1024
-time: spend msec:10454, sec:10
-
-heap: 1280
-time: spend msec:10758, sec:10
+time: spend msec:2396, sec:2
 
 heap: 2048
-time: spend msec:10880, sec:10
-
-heap: 3072
-time: spend msec:11435, sec:11
-
-heap: 4096
-time: spend msec:11937, sec:11
-
-heap: 5120
-time: spend msec:12223, sec:12
-
-heap: 8192
-time: spend msec:15675, sec:15
+time: spend msec:2512, sec:2
