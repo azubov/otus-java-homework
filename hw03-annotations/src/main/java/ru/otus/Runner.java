@@ -23,28 +23,42 @@ public class Runner {
         final Method after = RunnerUtils.getMethodByAnnotation(methods, After.class);
 
         for (var test : tests) {
-            execute(clazz, before, test, after);
+            execute(getInstance(clazz), before, test, after);
         }
 
         RunnerUtils.printResults(executed, passed, failed);
     }
 
-    private <T> void execute(final Class<T> clazz, final Method before, final Method test, final Method after) {
+    private <T> T getInstance(final Class<T> clazz) {
         try {
-            final T obj = clazz.getDeclaredConstructor().newInstance();
+            return clazz.getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-            if (Objects.nonNull(before)) before.invoke(obj);
-            invoke(test, obj);
-            if (Objects.nonNull(after)) after.invoke(obj);
-
+    private <T> void execute(final T obj, final Method before, final Method test, final Method after) {
+        try {
+            if (Objects.nonNull(before)) invokeSimple(before, obj);
+            invokeWithCounter(test, obj);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            if (Objects.nonNull(after)) invokeSimple(after, obj);
             ++executed;
         }
     }
 
-    private <T> void invoke(final Method method, T obj) {
+    private <T> void invokeSimple(final Method method, T obj) {
+        try {
+            method.invoke(obj);
+        } catch (Exception e) {
+            System.out.println(e.getCause());
+        }
+    }
+
+    private <T> void invokeWithCounter(final Method method, T obj) {
         try {
             method.invoke(obj);
             ++passed;
