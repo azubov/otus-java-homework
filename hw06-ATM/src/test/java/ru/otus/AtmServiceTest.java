@@ -8,6 +8,7 @@ import ru.otus.atm.Atm;
 import ru.otus.ecxeption.NotEnoughBanknotesException;
 import ru.otus.factory.BanknoteFactory;
 import ru.otus.storage.BanknoteHolder;
+import ru.otus.storage.BanknoteStorage;
 
 import java.util.Set;
 
@@ -19,7 +20,7 @@ class AtmServiceTest {
 
     @BeforeEach
     void setup() {
-        atm = new Atm();
+        atm = new Atm(new BanknoteStorage());
         banknotes = BanknoteFactory.getEach(1);
     }
 
