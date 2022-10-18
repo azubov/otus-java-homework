@@ -1,6 +1,9 @@
 package ru.otus.crm.model;
 
+import ru.otus.annotation.Id;
+
 public class Manager {
+    @Id
     private Long no;
     private String label;
     private String param1;
@@ -12,10 +15,14 @@ public class Manager {
         this.label = label;
     }
 
-    public Manager(Long no, String label, String param1) {
-        this.no = no;
-        this.label = label;
+    public Manager(String label, String param1) {
+        this(label);
         this.param1 = param1;
+    }
+
+    public Manager(Long no, String label, String param1) {
+        this(label, param1);
+        this.no = no;
     }
 
     public Long getNo() {
