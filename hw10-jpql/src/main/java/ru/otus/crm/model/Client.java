@@ -4,16 +4,15 @@ package ru.otus.crm.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
 @Entity
 @Table(name = "client")
 public class Client extends BaseId implements Cloneable {
@@ -25,7 +24,7 @@ public class Client extends BaseId implements Cloneable {
     @JoinColumn(name = "address_id")
     private Address address;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "client")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "client")
     private List<Phone> phones = new ArrayList<>();
 
     public Client(String name) {
@@ -50,6 +49,16 @@ public class Client extends BaseId implements Cloneable {
 
     @Override
     public Client clone() {
-        return new Client(this.id, this.name, this.address, this.phones);
+        var addressClone = Optional.ofNullable(this.address).map(Address::clone).orElse(null);
+        var phonesClone = this.phones.stream().map(Phone::clone).toList();
+        return new Client(this.id, this.name, addressClone, phonesClone);
+    }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

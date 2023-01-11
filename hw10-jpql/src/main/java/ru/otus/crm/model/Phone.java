@@ -1,15 +1,13 @@
 package ru.otus.crm.model;
 
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.*;
 
 @NoArgsConstructor
-@ToString
 @Entity
 @Table(name = "phone")
-public class Phone extends BaseId {
+public class Phone extends BaseId implements Cloneable {
 
     @Column(name = "number")
     private String number;
@@ -25,5 +23,18 @@ public class Phone extends BaseId {
 
     void setClient(Client client) {
         this.client = client;
+    }
+
+    @Override
+    public Phone clone() {
+        return new Phone(this.id, this.number);
+    }
+
+    @Override
+    public String toString() {
+        return "Phone{" +
+                "id=" + id +
+                ", number='" + number + '\'' +
+                '}';
     }
 }
