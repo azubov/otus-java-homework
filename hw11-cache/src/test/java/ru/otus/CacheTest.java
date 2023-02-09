@@ -9,7 +9,7 @@ import ru.otus.core.repository.executor.DbExecutorImpl;
 import ru.otus.core.sessionmanager.TransactionRunnerJdbc;
 import ru.otus.crm.datasource.DriverManagerDataSource;
 import ru.otus.crm.model.Client;
-import ru.otus.crm.service.CachedDbServiceClientImpl;
+import ru.otus.crm.service.DbServiceClientCachedImpl;
 import ru.otus.crm.service.DBServiceClient;
 import ru.otus.crm.service.DbServiceClientImpl;
 import ru.otus.jdbc.mapper.DataTemplateJdbc;
@@ -66,7 +66,7 @@ class CacheTest {
 
         cache = new MyCache<>();
         service = new DbServiceClientImpl(transactionRunner, dataTemplateClient);
-        cachedService = new CachedDbServiceClientImpl(service, cache);
+        cachedService = new DbServiceClientCachedImpl(service, cache);
 
         IntStream.range(0, 100).forEach(id -> cachedService.saveClient(new Client("" + id)));
     }

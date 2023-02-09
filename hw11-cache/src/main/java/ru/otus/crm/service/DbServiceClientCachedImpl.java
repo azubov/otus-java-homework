@@ -6,12 +6,12 @@ import ru.otus.crm.model.Client;
 import java.util.List;
 import java.util.Optional;
 
-public class CachedDbServiceClientImpl implements DBServiceClient {
+public class DbServiceClientCachedImpl implements DBServiceClient {
 
     private final DBServiceClient service;
     private final MyCache<Long, Client> cache;
 
-    public CachedDbServiceClientImpl(DBServiceClient service, MyCache<Long, Client> cache) {
+    public DbServiceClientCachedImpl(DBServiceClient service, MyCache<Long, Client> cache) {
         this.service = service;
         this.cache = cache;
     }
