@@ -42,6 +42,12 @@ public class Client extends BaseId implements Cloneable {
         addPhones(phones);
     }
 
+    public Client(String name, Address address, List<Phone> phones) {
+        this(name);
+        this.address = address;
+        addPhones(phones);
+    }
+
     private void addPhones(List<Phone> phones) {
         phones.forEach(e -> e.setClient(this));
         this.phones.addAll(phones);

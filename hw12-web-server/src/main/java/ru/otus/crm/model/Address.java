@@ -19,6 +19,10 @@ public class Address extends BaseId implements Cloneable {
         this.street = street;
     }
 
+    public Address(String street) {
+        this.street = street;
+    }
+
     @Override
     public Address clone() {
         return new Address(this.id, this.street);
@@ -26,9 +30,6 @@ public class Address extends BaseId implements Cloneable {
 
     @Override
     public String toString() {
-        return "Address{" +
-                "id=" + id +
-                ", street='" + street + '\'' +
-                '}';
+        return street;
     }
 }

@@ -21,6 +21,10 @@ public class Phone extends BaseId implements Cloneable {
         this.number = number;
     }
 
+    public Phone(String number) {
+        this.number = number;
+    }
+
     void setClient(Client client) {
         this.client = client;
     }
@@ -32,9 +36,6 @@ public class Phone extends BaseId implements Cloneable {
 
     @Override
     public String toString() {
-        return "Phone{" +
-                "id=" + id +
-                ", number='" + number + '\'' +
-                '}';
+        return number;
     }
 }
