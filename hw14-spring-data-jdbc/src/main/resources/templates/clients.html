@@ -29,10 +29,12 @@
 <table style="width: 500px" class="clients">
     <thead>
     <tr>
-        <td style="width: 50px">Id</td>
-        <td style="width: 150px">Имя</td>
-        <td style="width: 500px">Адрес</td>
-        <td style="width: 500px">Телефон</td>
+        <th style="width: 50px">Id</th>
+        <th style="width: 150px">Имя</th>
+        <th style="width: 500px">Адрес</th>
+        <th style="width: 500px">Телефон</th>
+        <th>Редактировать</th>
+        <th>Удалить</th>
     </tr>
     </thead>
     <tbody>
@@ -43,6 +45,8 @@
             <td th:each="phone : ${client.phones}">
                 <th:block th:text="${phone.number}"></th:block>
             </td>
+            <td><a th:href="@{/edit/{id}(id=${client.id})}">Редактировать</a></td>
+            <td><a th:href="@{/delete/{id}(id=${client.id})}">Удалить</a></td>
         </tr>
     </tbody>
 </table>
