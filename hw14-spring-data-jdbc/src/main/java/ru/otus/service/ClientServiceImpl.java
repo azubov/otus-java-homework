@@ -20,7 +20,21 @@ public class ClientServiceImpl implements ClientService {
     private final TransactionManager transactionManager;
 
     @Override
-    public Client saveClient(Client client) {
+    public List<Client> findAll() {
+        var clientList = dao.findAll();
+        log.info("all clients: {}", clientList);
+        return clientList;
+    }
+
+    @Override
+    public Client findById(Long id) {
+        var client = dao.findById(id).orElseThrow();
+        log.info("found client: {}", client);
+        return client;
+    }
+
+    @Override
+    public Client save(Client client) {
         return transactionManager.doInTransaction(() -> {
             var savedClient = dao.save(client);
             log.info("saved client: {}", savedClient);
@@ -29,9 +43,8 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public List<Client> findAll() {
-        var clientList = dao.findAll();
-        log.info("clientList:{}", clientList);
-        return clientList;
+    public void delete(Long id) {
+        dao.deleteById(id);
+        log.info("deleted client.id: {}", id);
     }
 }

@@ -5,7 +5,7 @@ import org.springframework.data.annotation.PersistenceCreator;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Getter
-@Table(name = "address")
+@Table("address")
 public class Address extends BaseId {
 
     private final String street;

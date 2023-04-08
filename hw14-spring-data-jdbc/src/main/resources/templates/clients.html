@@ -6,8 +6,8 @@
 </head>
 
 <body>
-<h4>Создать клиента</h4>
-<form th:action="@{/clients}" th:object="${client}" method="post">
+<form th:action="@{/clients}" th:object="${client}" th:method="post">
+    <h4 th:text="${client.id == null} ? 'Создать клиента' : 'Обновить клиента'"></h4>
     <table class="client">
         <tr>
             <td>Имя</td>
@@ -18,11 +18,14 @@
             <td><input type="text" name="address" placeholder="Адрес клиента" th:field="*{address}"/></td>
         </tr>
         <tr>
-            <td>Телефон:</td>
-            <td><input type="text" name="phone" placeholder="Номер телефона клиента" th:field="*{phone}"/></td>
+            <td>Телефоны(через запятую):</td>
+            <td>
+                <input type="text" name="phone" placeholder="Номер телефона клиента" th:field="*{phones}"/>
+            </td>
         </tr>
     </table>
-    <input type="submit" value="Создать">
+    <input type="hidden" name="id" th:field="*{id}">
+    <input type="submit" th:value="${client.id == null} ? 'Создать' : 'Обновить'">
 </form>
 
 <h4>Список клиентов</h4>
@@ -33,20 +36,30 @@
         <th style="width: 150px">Имя</th>
         <th style="width: 500px">Адрес</th>
         <th style="width: 500px">Телефон</th>
-        <th>Редактировать</th>
+        <th>Изменить</th>
         <th>Удалить</th>
     </tr>
     </thead>
     <tbody>
-        <tr th:each="client : ${clients}">
-            <td th:text="${client.id}">1</td>
-            <td th:text="${client.name}"></td>
-            <td th:text="${client.address.street}"></td>
-            <td th:each="phone : ${client.phones}">
-                <th:block th:text="${phone.number}"></th:block>
+        <tr th:each="c : ${clients}">
+            <td th:text="${c.id}"></td>
+            <td th:text="${c.name}"></td>
+            <td th:text="${c.address}"></td>
+            <td>
+                <span th:each="p : ${c.phones}">
+                    <div th:text="${p.number}"></div>
+                </span>
             </td>
-            <td><a th:href="@{/edit/{id}(id=${client.id})}">Редактировать</a></td>
-            <td><a th:href="@{/delete/{id}(id=${client.id})}">Удалить</a></td>
+            <td>
+                <form action="#" th:action="@{/clients/{id}(id=${c.id})}" th:method="put">
+                    <input type="submit" value="Update">
+                </form>
+            </td>
+            <td>
+                <form action="#" th:action="@{/clients/{id}(id=${c.id})}" th:method="delete">
+                    <input type="submit" value="Delete">
+                </form>
+            </td>
         </tr>
     </tbody>
 </table>

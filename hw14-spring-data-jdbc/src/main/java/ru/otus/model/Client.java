@@ -7,6 +7,7 @@ import org.springframework.data.relational.core.mapping.Table;
 import ru.otus.dto.ClientDto;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Table("client")
@@ -19,7 +20,10 @@ public class Client extends BaseId {
     private final Set<Phone> phones;
 
     public Client(ClientDto dto) {
-        this(null, dto.getName(), new Address(dto.getAddress()), Set.of(new Phone(dto.getPhone())));
+        this(dto.getId(),
+                dto.getName(),
+                new Address(dto.getAddress()),
+                dto.getPhones().stream().map(Phone::new).collect(Collectors.toSet()));
     }
 
     @PersistenceCreator
@@ -34,7 +38,9 @@ public class Client extends BaseId {
     public String toString() {
         return "Client{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", name=" + name +
+                ", address=" + address +
+                ", phones=" + phones +
                 '}';
     }
 }

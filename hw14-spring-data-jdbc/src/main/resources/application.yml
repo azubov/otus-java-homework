@@ -5,6 +5,11 @@ spring:
     password: pwd
   flyway:
     enabled: true
+  mvc:
+      hiddenmethod:
+        filter:
+          enabled: 'true'
+
 
 logging:
   level:

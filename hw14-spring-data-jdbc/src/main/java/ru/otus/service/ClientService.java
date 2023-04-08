@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface ClientService {
 
-    Client saveClient(Client client);
     List<Client> findAll();
+    Client findById(Long id);
+    Client save(Client client);
+    void delete(Long id);
 }
