@@ -3,7 +3,7 @@ package ru.otus.executors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -16,6 +16,7 @@ public class ExecutorsMain {
     private static final String FIRST_THREAD = "Поток 1";
     private static final String SECOND_THREAD = "Поток 2";
     private static final Lock R_LOCK = new ReentrantLock();
+    private static final Condition TRY_AGAIN = R_LOCK.newCondition();
 
     private static boolean next;
     private final String threadName;
@@ -44,19 +45,19 @@ public class ExecutorsMain {
     }
 
     private void lock() {
-        log.debug("TryLock: {}", threadName);
+        R_LOCK.lock();
+        log.debug("{}: Locked", threadName);
+        orderThreads();
+    }
+
+    private void orderThreads() {
         if (isFirst()) {
-            R_LOCK.lock();
             next = true;
-            log.debug("Locked: {}", threadName);
         } else if (isNext()) {
-            R_LOCK.lock();
             next = false;
-            log.debug("Locked: {}", threadName);
         } else {
-            log.debug("Lock is blocked, trying again");
-            sleep(1);
-            lock();
+            await();
+            orderThreads();
         }
     }
 
@@ -68,9 +69,23 @@ public class ExecutorsMain {
         return !threadName.equals(FIRST_THREAD) && next;
     }
 
+    private void await() {
+        try {
+            TRY_AGAIN.await();
+            log.debug("{}: Waiting...", threadName);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
     private void unlock() {
-        R_LOCK.unlock();
-        log.debug("Unlocked: {}", threadName);
+        try {
+            TRY_AGAIN.signalAll();
+            log.debug("{}: Signal All", threadName);
+        } finally {
+            R_LOCK.unlock();
+            log.debug("{}: Unlocked", threadName);
+        }
     }
 
     private void increment() {
@@ -85,13 +100,5 @@ public class ExecutorsMain {
 
     private void log() {
         log.info(MESSAGE.formatted(Thread.currentThread().getName(), counter));
-    }
-
-    private void sleep(int seconds) {
-        try {
-            Thread.sleep(TimeUnit.SECONDS.toMillis(seconds));
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
     }
 }
