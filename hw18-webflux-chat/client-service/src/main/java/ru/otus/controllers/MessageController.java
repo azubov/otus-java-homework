@@ -22,6 +22,7 @@ public class MessageController {
     private static final Logger logger = LoggerFactory.getLogger(MessageController.class);
 
     private static final String TOPIC_TEMPLATE = "/topic/response.";
+    private static final String ROOM_1408 = "1408";
 
     private final WebClient datastoreClient;
     private final SimpMessagingTemplate template;
@@ -34,6 +35,7 @@ public class MessageController {
     @MessageMapping("/message.{roomId}")
     public void getMessage(@DestinationVariable String roomId, Message message) {
         logger.info("get message:{}, roomId:{}", message, roomId);
+        if (roomId.equals(ROOM_1408)) return;
         saveMessage(roomId, message)
                 .subscribe(msgId -> logger.info("message send id:{}", msgId));
 

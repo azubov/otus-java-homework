@@ -34,6 +34,10 @@ const disconnect = () => {
     console.log("Disconnected");
 }
 
+const clearChatLine = () => {
+    document.getElementById(chatLineElementId).innerHTML = "";
+}
+
 const sendMsg = () => {
     const roomId = document.getElementById(roomIdElementId).value;
     const message = document.getElementById(messageElementId).value;
