@@ -37,7 +37,7 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
     private List<Method> loadBeanDefinitions(List<Method> methods) {
         return methods.stream()
                 .filter(this::isBean)
-                .sorted(invokeOrder())
+                .sorted(invocationOrder())
                 .toList();
     }
 
@@ -45,7 +45,7 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
         return method.isAnnotationPresent(AppComponent.class);
     }
 
-    private Comparator<Method> invokeOrder() {
+    private Comparator<Method> invocationOrder() {
         return Comparator.comparingInt(m -> m.getAnnotation(AppComponent.class).order());
     }
 
@@ -82,12 +82,11 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
     public <C> C getAppComponent(Class<C> componentClass) {
         if (isDuplicateAppComponent(componentClass)) {
             throw new IllegalArgumentException("%s already exist in the context".formatted(componentClass));
-        } else {
-            return (C) appComponents.stream()
-                    .filter(componentClass::isInstance).findFirst()
-                    .orElseThrow(() ->
-                            new IllegalArgumentException("%s not found in the context".formatted(componentClass)));
         }
+        return (C) appComponents.stream()
+                .filter(componentClass::isInstance).findFirst()
+                .orElseThrow(() ->
+                        new IllegalArgumentException("%s not found in the context".formatted(componentClass)));
     }
 
     private <C> boolean isDuplicateAppComponent(Class<C> componentClass) {
@@ -98,6 +97,8 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
 
     @Override
     public <C> C getAppComponent(String componentName) {
-        return (C) appComponentsByName.get(componentName);
+        return (C) Optional.ofNullable(appComponentsByName.get(componentName))
+                .orElseThrow(() ->
+                        new IllegalArgumentException("%s not found in the context".formatted(componentName)));
     }
 }
