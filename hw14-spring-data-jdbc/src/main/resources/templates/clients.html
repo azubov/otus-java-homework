@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Клиенты</title>
+    <meta charset="utf-8">
+</head>
+
+<body>
+<form th:action="@{/clients}" th:object="${client}" th:method="post">
+    <h4 th:text="${client.id == null} ? 'Создать клиента' : 'Обновить клиента'"></h4>
+    <table class="client">
+        <tr>
+            <td>Имя</td>
+            <td><input type="text" name="name" placeholder="Имя клиента" th:field="*{name}"/></td>
+        </tr>
+        <tr>
+            <td>Адрес</td>
+            <td><input type="text" name="address" placeholder="Адрес клиента" th:field="*{address}"/></td>
+        </tr>
+        <tr>
+            <td>Телефоны(через запятую):</td>
+            <td>
+                <input type="text" name="phone" placeholder="Номер телефона клиента" th:field="*{phones}"/>
+            </td>
+        </tr>
+    </table>
+    <input type="hidden" name="id" th:field="*{id}">
+    <input type="submit" th:value="${client.id == null} ? 'Создать' : 'Обновить'">
+</form>
+
+<h4>Список клиентов</h4>
+<table style="width: 500px" class="clients">
+    <thead>
+    <tr>
+        <th style="width: 50px">Id</th>
+        <th style="width: 150px">Имя</th>
+        <th style="width: 500px">Адрес</th>
+        <th style="width: 500px">Телефон</th>
+        <th>Изменить</th>
+        <th>Удалить</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr th:each="c : ${clients}">
+            <td th:text="${c.id}"></td>
+            <td th:text="${c.name}"></td>
+            <td th:text="${c.address}"></td>
+            <td>
+                <span th:each="p : ${c.phones}">
+                    <div th:text="${p.number}"></div>
+                </span>
+            </td>
+            <td>
+                <form action="#" th:action="@{/clients/{id}(id=${c.id})}" th:method="put">
+                    <input type="submit" value="Update">
+                </form>
+            </td>
+            <td>
+                <form action="#" th:action="@{/clients/{id}(id=${c.id})}" th:method="delete">
+                    <input type="submit" value="Delete">
+                </form>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>
