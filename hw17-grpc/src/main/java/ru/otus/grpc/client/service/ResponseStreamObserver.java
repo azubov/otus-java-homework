@@ -30,8 +30,6 @@ public class ResponseStreamObserver implements StreamObserver<ResponseMessage> {
     }
 
     public int getValue() {
-        var value = currentValue.get();
-        currentValue.set(0);
-        return value;
+        return currentValue.getAndSet(0);
     }
 }
