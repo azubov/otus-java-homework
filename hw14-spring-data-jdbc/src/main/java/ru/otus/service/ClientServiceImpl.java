@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import ru.otus.dao.ClientDao;
+import ru.otus.repository.ClientRepository;
 import ru.otus.model.Client;
 import ru.otus.sessionmanager.TransactionManager;
 
@@ -16,7 +16,7 @@ public class ClientServiceImpl implements ClientService {
 
     private static final Logger log = LoggerFactory.getLogger(ClientServiceImpl.class);
 
-    private final ClientDao dao;
+    private final ClientRepository dao;
     private final TransactionManager transactionManager;
 
     @Override
