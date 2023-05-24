@@ -7,6 +7,6 @@ import ru.otus.domain.Message;
 public interface DataStore {
 
     Mono<Message> saveMessage(Message message);
-
     Flux<Message> loadMessages(String roomId);
+    Flux<Message> loadMessagesAll();
 }
