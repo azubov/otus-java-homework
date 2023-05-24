@@ -21,6 +21,10 @@ allprojects {
             }
             dependency "com.google.guava:guava:${Versions.guava}"
 
+            dependency("io.grpc:grpc-netty:${Versions.grpc}")
+            dependency("io.grpc:grpc-protobuf:${Versions.grpc}")
+            dependency("io.grpc:grpc-stub:${Versions.grpc}")
+
             dependency("org.webjars:sockjs-client:${Versions.sockjs}")
             dependency("org.webjars:stomp-websocket:${Versions.stomp}")
             dependency("org.webjars:bootstrap:${Versions.bootstrap}")
